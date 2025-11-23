@@ -34,9 +34,14 @@
             <input type="text" name="bentuk" value="<?php echo e(old('bentuk')); ?>" class="form-control" placeholder="tablet, kapsul, sirup...">
         </div>
         <div class="col-md-4 mb-3">
-            <label class="form-label">Satuan</label>
-            <input type="number" name="satuan" value="<?php echo e(old('satuan')); ?>" class="form-control" placeholder="mg">
+            <label class="form-label">Jumlah Obat</label>
+            <input type="number" name="satuan" value="<?php echo e(old('satuan')); ?>" class="form-control" placeholder="Jumlah">
         </div>
+        <div class="col-md-4 mb-3">
+    <label class="form-label">Stok Minimal</label>
+    <input type="number" name="stok_minimal" class="form-control"
+           value="<?php echo e(old('stok_minimal', $obat->stok->stok_minimal ?? 0)); ?>">
+    </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Kategori</label>
             <input type="text" name="kategori" value="<?php echo e(old('kategori')); ?>" class="form-control" placeholder="antibiotik, vitamin, analgesik...">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Obat;
 use Illuminate\Http\Request;
+use App\Models\StokFarmasi;
 
 class ObatController extends Controller
 {
@@ -27,11 +28,30 @@ class ObatController extends Controller
             'satuan'     => 'nullable|max:50',
             'kategori'   => 'nullable|max:100',
             'harga_jual' => 'required|numeric|min:0',
+            'stok_minimal'  => 'nullable|integer|min:0'
         ]);
 
         $validated['status_aktif'] = 1;
 
-        Obat::create($validated);
+        $obat = Obat::create([
+            'kode_obat'   => $validated['kode_obat'],
+            'nama_obat'   => $validated['nama_obat'],
+            'bentuk'      => $validated['bentuk'] ?? null,
+            'satuan'      => $validated['satuan'] ?? null,
+            'kategori'    => $validated['kategori'] ?? null,
+            'harga_jual'  => $validated['harga_jual'],
+            'status_aktif'=> $validated['status_aktif'],
+        ]);
+
+        $stokMinimal = $validated['stok_minimal'] ?? 0;
+
+         // 2. langsung buat stok awal untuk obat ini
+        StokFarmasi::create([
+        'id_obat'      => $obat->id_obat,
+        'qty'          => $obat->satuan,      // stok awal
+        'stok_minimal' => $stokMinimal,     // misal minimal 10 (boleh kamu ganti)
+        'lokasi'       => 'FARMASI',
+        ]);
 
         return redirect()->route('obat.index')
             ->with('success', 'Obat berhasil ditambahkan.');
@@ -55,9 +75,31 @@ class ObatController extends Controller
             'kategori'   => 'nullable|max:100',
             'harga_jual' => 'required|numeric|min:0',
             'status_aktif' => 'required|in:0,1',
+            'stok_minimal'  => 'nullable|integer|min:0'
         ]);
 
-        $obat->update($validated);
+        $obat->update([
+            'kode_obat'   => $validated['kode_obat'],
+            'nama_obat'   => $validated['nama_obat'],
+            'bentuk'      => $validated['bentuk'] ?? null,
+            'satuan'      => $validated['satuan'] ?? null,
+            'kategori'    => $validated['kategori'] ?? null,
+            'harga_jual'  => $validated['harga_jual'],
+            'status_aktif'=> $validated['status_aktif'],
+        ]);
+
+        $stokMinimal = $validated['stok_minimal'] ?? null;
+
+        if (!is_null($stokMinimal)) {
+            StokFarmasi::updateOrCreate(
+                ['id_obat' => $obat->id_obat],         
+                [
+                    'qty'          => $obat->satuan ?? 0,
+                    'stok_minimal' => $stokMinimal ?? 0,
+                    'lokasi'       => 'FARMASI',
+                ]
+            );
+        }
 
         return redirect()->route('obat.index')
             ->with('success', 'Obat berhasil diupdate.');

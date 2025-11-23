@@ -35,7 +35,7 @@
             <input type="text" name="bentuk" value="{{ old('bentuk', $obat->bentuk) }}" class="form-control">
         </div>
         <div class="col-md-4 mb-3">
-            <label class="form-label">Satuan</label>
+            <label class="form-label">Jumlah Obat</label>
             <input type="text" name="satuan" value="{{ old('satuan', $obat->satuan) }}" class="form-control">
         </div>
         <div class="col-md-4 mb-3">
@@ -48,6 +48,12 @@
         <label class="form-label">Harga Jual</label>
         <input type="number" step="0.01" name="harga_jual" value="{{ old('harga_jual', $obat->harga_jual) }}" class="form-control" required>
     </div>
+
+    <div class="mb-3">
+    <label class="form-label">Stok Minimal</label>
+    <input type="number" name="stok_minimal" class="form-control"
+           value="{{ old('stok_minimal', $obat->stok->stok_minimal ?? 0) }}">
+</div>
 
     <div class="mb-3">
         <label class="form-label">Status</label>

@@ -24,7 +24,7 @@
             <th>Kode</th>
             <th>Nama</th>
             <th>Bentuk</th>
-            <th>Satuan</th>
+            <th>Jumlah</th>
             <th>Kategori</th>
             <th class="text-end">Harga Jual</th>
             <th>Status</th>
